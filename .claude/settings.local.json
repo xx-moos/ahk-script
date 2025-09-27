@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__exa__get_code_context_exa",
+      "mcp__exa__web_search_exa"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
