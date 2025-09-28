@@ -454,6 +454,43 @@ LoadCommitButtonPosition() {
 ; 快捷键功能
 ; ============================================
 
+; Shift+G: 激活或打开UGIT窗口
++g::{
+    try {
+        ; 首先尝试激活已运行的UGit窗口
+        if (WinExist("ahk_exe UGit.exe")) {
+            WinActivate("ahk_exe UGit.exe")
+            TrayTip("老王提示", "UGit窗口已激活", "Iconi")
+        } else {
+            ; 如果没有运行，尝试启动UGit
+            TrayTip("老王提示", "UGit未运行，尝试启动...", "Iconi")
+            
+            ; 尝试多个可能的UGit路径
+            ugitPaths := [
+                "C:\\Users\\Administrator\\AppData\\Local\\UGit\\UGit.exe",
+            ]
+            
+            ugitStarted := false
+            for path in ugitPaths {
+                try {
+                    Run(path)
+                    ugitStarted := true
+                    TrayTip("老王提示", "UGit启动成功: " . path, "Iconi")
+                    break
+                } catch {
+                    continue
+                }
+            }
+            
+            if (!ugitStarted) {
+                TrayTip("艹！启动失败", "找不到UGit.exe，请检查安装路径", "Icon!")
+            }
+        }
+    } catch Error as err {
+        TrayTip("艹！操作失败", err.message, "Icon!")
+    }
+}
+
 ; Ctrl+Alt+C: 手动定位提交按钮
 ^!c::{
     if (!IsUgitWindow()) {
@@ -534,6 +571,7 @@ TrayTip("老王出品", "UGit自动化Pro版已启动! Win+F4查看帮助", "Ico
 
     【主要功能】
     Ctrl+Enter: 六层智能检测提交按钮
+    Shift+G: 激活或打开UGit窗口
 
     【手动功能】
     Ctrl+Alt+C: 手动定位提交按钮
